@@ -3,19 +3,21 @@
 	Author Scott Beck @bline
 */
 var loaderUtils = require("loader-utils");
+var jade = require("jade");
+
 module.exports = function(source) {
 	this.cacheable && this.cacheable(true);
-	var jade = require("jade");
-	var query = loaderUtils.parseQuery(this.query);
-	var req = loaderUtils.getRemainingRequest(this).replace(/^!/, "");
-	var tmplFunc = jade.compile(source, {
-		filename: req,
-		self: query.self,
-		pretty: query.pretty,
-		locals: query.locals,
-		doctype: query.doctype || 'html',
-		compileDebug: this.debug || false
-	});
 
-	return "module.exports = '" + tmplFunc(query) + "';";
+	var query = loaderUtils.parseQuery(this.query),
+		req = loaderUtils.getRemainingRequest(this).replace(/^!/, ""),
+		tmplFunc = jade.compile(source, {
+			filename: req,
+			self: query.self,
+			pretty: query.pretty,
+			locals: query.locals,
+			doctype: query.doctype || 'html',
+			compileDebug: this.debug || false
+		});
+
+	return "module.exports = '" + tmplFunc(query).replace(/'/g, "\'") + "';";
 }
