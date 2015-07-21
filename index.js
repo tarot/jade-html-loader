@@ -17,5 +17,5 @@ module.exports = function(source) {
 		compileDebug: this.debug || false
 	});
 
-	return tmplFunc(query);
+	return "module.exports = '" + tmplFunc(query) + "';";
 }
