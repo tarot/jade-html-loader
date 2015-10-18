@@ -19,5 +19,5 @@ module.exports = function(source) {
 			compileDebug: this.debug || false
 		});
 
-	return "module.exports = '" + tmplFunc(query).replace(/'/g, "\'") + "';";
+	return "module.exports = " + JSON.stringify(tmplFunc(query)) + ";";
 }
